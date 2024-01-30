@@ -9,7 +9,7 @@ const session = require('express-session');
 
 // Configuració de l'aplicació Express
 const app = express();
-const PORT = 3788;
+const PORT = 3582;
 
 // Creació del servidor HTTP utilitzant Express
 const httpServer = http.createServer(app);
