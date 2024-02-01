@@ -43,17 +43,33 @@ app.use(bodyParser.json());
 
 
 
+//----------------------------------- Usuaris Reigister i Login -----------------------------------//
 
+app.post('/registrar', async (req, res) => {
+    try {
+      const newUser = req.body;
+      const registrationResult = await registrarUsuari(connection, newUser);
+      if (registrationResult) {
+        res.json({ success: true, message: 'Usuario registrado exitosamente' });
+      } else {
+        res.status(500).json({ success: false, message: 'Error al registrar usuario' });
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ success: false, message: 'Error en el servidor' });
+    }
+  });
 
-
-
-
-
-
-
-
-
-
+  app.get('/usuaris', async (req, res) => {
+    try {
+      const usuariosJSON = await getUsuariInfoForLogin(connection);
+      const usuarios = JSON.parse(usuariosJSON);
+      res.json(usuarios);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error al obtener la lista de usuarios');
+    }
+  });
 
 
 
