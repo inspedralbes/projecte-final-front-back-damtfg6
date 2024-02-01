@@ -1,5 +1,5 @@
 const mysql = require('mysql2/promise');
-module.exports = { registrarUsuari, getUsuariInfoForLogin };
+module.exports = { registrarUsuari, registrarTutor, getUsuariInfoForLogin };
 
 const connection = mysql.createPool({
     host: "dam.inspedralbes.cat",
@@ -25,13 +25,45 @@ async function getUsuariInfoForLogin(connection) {
 
 async function registrarUsuari(connection, usuari) {
     try {
-        const {nomCogonoms, dni, telefon, correu, contrasenya} = usuari;
+        const { nomCognoms, dni, telefon, correu, contrasenya } = usuari;
+
         const [result] = await connection.execute(
-            'INSERT INTO Usuaris (nomCogonoms, dni, telefon, correu, contrasenya) VALUES (?, ?, ?, ?, ?)',
-            [nomCogonoms, dni, telefon, correu, contrasenya]
+            'INSERT INTO Usuaris (nomCognoms, dni, telefon, correu, contrasenya) VALUES (?, ?, ?, ?, ?)',
+            [nomCognoms, dni, telefon, correu, contrasenya]
         );
+        
+        if (result.affectedRows === 1) {
+            console.log("Usuari registrat correctament");
+            return true;
+        } else {
+            console.log("Error al insertar usuari en la base de datos");
+            return false;
+        }
     } catch (error) {
         console.error('Error al insertar usuari:', error.message);
-        throw error;
+        return false;
     }
 }
+
+async function registrarTutor(connection, familiar) {
+    try {
+        const { nomCognoms, dni, telefon, correu, contrasenya, usuari_identificador } = familiar;
+
+        const [result] = await connection.execute(
+            'INSERT INTO Familiar (nomCognoms, dni, telefon, correu, contrasenya, usuari_identificador) VALUES (?, ?, ?, ?, ?)',
+            [nomCognoms, dni, telefon, correu, contrasenya, usuari_identificador]
+        );
+        
+        if (result.affectedRows === 1) {
+            console.log("familiar registrat correctament");
+            return true;
+        } else {
+            console.log("Error al insertar familiar en la base de datos");
+            return false;
+        }
+    } catch (error) {
+        console.error('Error al insertar familiar:', error.message);
+        return false;
+    }
+}
+

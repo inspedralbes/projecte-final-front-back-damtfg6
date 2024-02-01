@@ -15,6 +15,15 @@ const PORT = 3672;
 // Creació del servidor HTTP utilitzant Express
 const httpServer = http.createServer(app);
 
+// Configuració de la connexió a la base de dades
+
+const connection = mysql.createPool({
+  host: "dam.inspedralbes.cat",
+  user: "a22albcormad_grup6",
+  password: "Pedralbes24",
+  database: "a22albcormad_grup6"
+});
+
 // Configuració de Socket.IO 
 const io = socketIO(httpServer, {
     cors: {
@@ -44,6 +53,7 @@ app.use(bodyParser.json());
 
 
 
+
 //----------------------------------- Usuaris Reigister i Login -----------------------------------//
 
 app.post('/registrarUsuari', async (req, res) => {
@@ -51,13 +61,32 @@ app.post('/registrarUsuari', async (req, res) => {
       const newUser = req.body;
       const registrationResult = await registrarUsuari(connection, newUser);
       if (registrationResult) {
-        res.json({ success: true, message: 'Usuario registrado exitosamente' });
+        res.json({ autoritzacio: true, message: 'Usuario registrado exitosamente' });
       } else {
-        res.status(500).json({ success: false, message: 'Error al registrar usuario' });
+        res.status(500).json({ autoritzacio: false, message: 'Error al registrar usuario' });
+        console.log("Error al registrar usuario")
       }
     } catch (err) {
       console.error(err);
-      res.status(500).json({ success: false, message: 'Error en el servidor' });
+      res.status(500).json({ autoritzacio: false, message: 'Error en el servidor' });
+      console.log("Error en el servidor")
+    }
+  });
+
+  app.post('/registrarTutor', async (req, res) => {
+    try {
+      const newFamiliar = req.body;
+      const registrationResult = await registrarTutor(connection, newFamiliar);
+      if (registrationResult) {
+        res.json({ autoritzacio: true, message: 'Familiar registrado exitosamente' });
+      } else {
+        res.status(500).json({ autoritzacio: false, message: 'Error al registrar Familiar' });
+        console.log("Error al registrar Familiar")
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ autoritzacio: false, message: 'Error en el servidor' });
+      console.log("Error en el servidor")
     }
   });
 
