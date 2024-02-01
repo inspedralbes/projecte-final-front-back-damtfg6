@@ -25,10 +25,10 @@ async function getUsuariInfoForLogin(connection) {
 
 async function registrarUsuari(connection, usuari) {
     try {
-        const { nomUsuari, nomCogonoms, correu, passwd, rol } = usuari;
+        const {nomCogonoms, dni, telefon, correu, contrasenya} = usuari;
         const [result] = await connection.execute(
             'INSERT INTO Usuaris (nomCogonoms, dni, telefon, correu, contrasenya) VALUES (?, ?, ?, ?, ?)',
-            [nomUsuari, nomCogonoms, correu, passwd, rol]
+            [nomCogonoms, dni, telefon, correu, contrasenya]
         );
     } catch (error) {
         console.error('Error al insertar usuari:', error.message);

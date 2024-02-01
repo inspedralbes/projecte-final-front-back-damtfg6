@@ -6,10 +6,11 @@ const mysql = require('mysql2/promise');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const session = require('express-session');
+const {registrarUsuari, getUsuariInfoForLogin} = require('./scriptSQL.js');
 
 // Configuració de l'aplicació Express
 const app = express();
-const PORT = 3582;
+const PORT = 3672;
 
 // Creació del servidor HTTP utilitzant Express
 const httpServer = http.createServer(app);
@@ -45,7 +46,7 @@ app.use(bodyParser.json());
 
 //----------------------------------- Usuaris Reigister i Login -----------------------------------//
 
-app.post('/registrar', async (req, res) => {
+app.post('/registrarUsuari', async (req, res) => {
     try {
       const newUser = req.body;
       const registrationResult = await registrarUsuari(connection, newUser);
