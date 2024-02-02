@@ -50,7 +50,7 @@ async function registrarTutor(connection, familiar) {
         const { nomCognoms, dni, telefon, correu, contrasenya, usuari_identificador } = familiar;
 
         const [result] = await connection.execute(
-            'INSERT INTO Familiar (nomCognoms, dni, telefon, correu, contrasenya, usuari_identificador) VALUES (?, ?, ?, ?, ?)',
+            'INSERT INTO Familiar (nomCognoms, dni, telefon, correu, contrasenya, usuari_identificador) VALUES (?, ?, ?, ?, ?, ?)',
             [nomCognoms, dni, telefon, correu, contrasenya, usuari_identificador]
         );
         

@@ -6,7 +6,7 @@ const mysql = require('mysql2/promise');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const session = require('express-session');
-const {registrarUsuari, getUsuariInfoForLogin} = require('./scriptSQL.js');
+const {registrarUsuari, getUsuariInfoForLogin, registrarTutor} = require('./scriptSQL.js');
 
 // Configuració de l'aplicació Express
 const app = express();
