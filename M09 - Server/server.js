@@ -6,7 +6,7 @@ const mysql = require('mysql2/promise');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const session = require('express-session');
-const {registrarUsuari, getUsuariInfoForLogin, registrarTutor} = require('./scriptSQL.js');
+const {registrarUsuari, getUsuarisLoginAndroid, registrarTutor} = require('./scriptSQL.js');
 
 // Configuració de l'aplicació Express
 const app = express();
@@ -90,16 +90,30 @@ app.post('/registrarUsuari', async (req, res) => {
     }
   });
 
-  app.get('/usuaris', async (req, res) => {
-    try {
-      const usuariosJSON = await getUsuariInfoForLogin(connection);
-      const usuarios = JSON.parse(usuariosJSON);
-      res.json(usuarios);
-    } catch (err) {
-      console.error(err);
-      res.status(500).send('Error al obtener la lista de usuarios');
-    }
-  });
+  app.post("/usuarisLogin", function (req, res) {
+    const user = req.body;
+    let usuariTrobat = false;
+    let autoritzacio = { "autoritzacio": false };
+
+    // Obtener usuarios de las tablas Usuaris y Familiar
+    getUsuarisLoginAndroid(connection).then((usuaris) => {
+        usuaris = JSON.parse(usuaris);
+
+        // Buscar en la lista combinada de usuarios
+        for (var i = 0; i < usuaris.length && !usuariTrobat; i++) {
+            if (usuaris[i].dni == user.dni && usuaris[i].contrasenya == user.contrasenya) {
+                usuariTrobat = true;
+                req.session.nombre = user.nomUsuari;
+            }
+        }
+        autoritzacio.autoritzacio = usuariTrobat;
+        console.log("Autoritzacio Login: ", autoritzacio);
+        res.json(autoritzacio);
+    }).catch((error) => {
+        console.error('Error al obtener usuarios:', error.message);
+        res.json(autoritzacio);
+    });
+});
 
 
 

@@ -1,5 +1,5 @@
 const mysql = require('mysql2/promise');
-module.exports = { registrarUsuari, registrarTutor, getUsuariInfoForLogin };
+module.exports = { registrarUsuari, registrarTutor, getUsuarisLoginAndroid};
 
 const connection = mysql.createPool({
     host: "dam.inspedralbes.cat",
@@ -10,18 +10,20 @@ const connection = mysql.createPool({
 
 
 
-async function getUsuariInfoForLogin(connection) {
+async function getUsuarisLoginAndroid(connection) {
     try {
-        const [rows, fields] = await connection.execute('SELECT * FROM Usuaris');
+        const [rows, fields] = await connection.execute(`
+            SELECT dni, contrasenya FROM Usuaris
+            UNION
+            SELECT dni, contrasenya FROM Familiar
+        `);
         const usuariosJSON = JSON.stringify(rows);
-        console.log("Usuarios encontrados:", usuariosJSON);
         return usuariosJSON;
     } catch (error) {
-        console.error('Error al obtener información de usuarios:', error.message);
+        console.error('Error al obtener usuarios:', error.message);
         throw error;
     }
 }
-
 
 async function registrarUsuari(connection, usuari) {
     try {
