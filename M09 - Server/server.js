@@ -93,27 +93,39 @@ app.post('/registrarUsuari', async (req, res) => {
   app.post("/usuarisLogin", function (req, res) {
     const user = req.body;
     let usuariTrobat = false;
-    let autoritzacio = { "autoritzacio": false };
+    let autoritzacio = { "autoritzacio": false, "rol": 'usuari' };
 
     // Obtener usuarios de las tablas Usuaris y Familiar
     getUsuarisLoginAndroid(connection).then((usuaris) => {
         usuaris = JSON.parse(usuaris);
 
         // Buscar en la lista combinada de usuarios
-        for (var i = 0; i < usuaris.length && !usuariTrobat; i++) {
+        let i;
+        for (i = 0; i < usuaris.length && !usuariTrobat; i++) {
             if (usuaris[i].dni == user.dni && usuaris[i].contrasenya == user.contrasenya) {
                 usuariTrobat = true;
                 req.session.nombre = user.nomUsuari;
             }
         }
-        autoritzacio.autoritzacio = usuariTrobat;
+
+        // Después del bucle
+        if (usuariTrobat) {
+            // Establecer la autorización en verdadera
+            autoritzacio.autoritzacio = true;
+
+            // Verificar si el usuario tiene un identificador
+            autoritzacio.rol = usuaris[i - 1].usuari_identificador ? "tutor" : "usuari";
+        }
+
         console.log("Autoritzacio Login: ", autoritzacio);
         res.json(autoritzacio);
     }).catch((error) => {
         console.error('Error al obtener usuarios:', error.message);
-        res.json(autoritzacio);
+        res.status(500).json({ "error": "Error al obtener usuarios" });
     });
 });
+
+
 
 
 
