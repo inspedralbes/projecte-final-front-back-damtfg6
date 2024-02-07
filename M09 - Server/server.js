@@ -1,4 +1,3 @@
-// Importació de mòduls
 const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io');
@@ -7,15 +6,24 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const session = require('express-session');
 const {registrarUsuari, getUsuarisLoginAndroid, registrarTutor} = require('./scriptSQL.js');
-
-// Configuració de l'aplicació Express
 const app = express();
 const PORT = 3672;
 
-// Creació del servidor HTTP utilitzant Express
 const httpServer = http.createServer(app);
 
-// Configuració de la connexió a la base de dades
+app.use(cors({
+  origin: function (origin, callback) {
+      return callback(null, true);
+  }
+}));
+app.use(session({
+  secret: 'keyboardcat',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 const connection = mysql.createPool({
   host: "dam.inspedralbes.cat",
@@ -24,33 +32,46 @@ const connection = mysql.createPool({
   database: "a22albcormad_grup6"
 });
 
-// Configuració de Socket.IO 
+//----------------------------------- CHAT -----------------------------------//
 const io = socketIO(httpServer, {
-    cors: {
-        origin: "*",
-        methods: ["GET", "POST"]
+  cors: {
+      origin: "*",
+      methods: ["GET", "POST"]
+  }
+});
+app.post('/enviarMensaje', async (req, res) => {
+const { nomCognoms, message } = req.body;
+console.log(`Recibida solicitud de ${nomCognoms} para enviar mensaje: ${message}`);
+for (let userId in users) {
+  users[userId].emit('receive_message', { nomCognoms, message });
+}
+console.log(`Mensaje enviado con éxito a todos los usuarios`);
+
+res.send({ success: true });
+});
+let users = [];
+
+io.on('connection', (socket) => {
+
+socket.on('user_connected', (userId) => {
+    users[userId] = socket;
+});
+
+socket.on('send_message', (data) => {
+    if (users[data.receiverId]) {
+        users[data.receiverId].emit('receive_message', data);
     }
 });
 
-// Configuració de CORS 
-app.use(cors({
-    origin: function (origin, callback) {
-        return callback(null, true);
+socket.on('disconnect', () => {
+    for (let userId in users) {
+        if (users[userId] == socket) {
+            delete users[userId];
+            break;
+        }
     }
-}));
-
-// Configuració de la sessió d'Express
-app.use(session({
-    secret: 'keyboardcat',
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true }
-}));
-
-// Configuració de body-parser
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-
+});
+});
 
 
 
@@ -94,11 +115,10 @@ app.post('/registrarUsuari', async (req, res) => {
     const user = req.body;
     let autoritzacio = { "autoritzacio": false, "rol": 'usuari', "userData": null };
 
-    // Obtener usuarios de las tablas Usuaris y Familiar
+
     getUsuarisLoginAndroid(connection).then((usuaris) => {
         usuaris = JSON.parse(usuaris);
 
-        // Buscar en la lista combinada de usuarios
         let i;
         for (i = 0; i < usuaris.length && !autoritzacio.autoritzacio; i++) {
             if (usuaris[i].dni == user.dni && usuaris[i].contrasenya == user.contrasenya) {
@@ -116,7 +136,6 @@ app.post('/registrarUsuari', async (req, res) => {
         res.status(500).json({ "error": "Error al obtener usuarios" });
     });
 });
-
 
 
 
