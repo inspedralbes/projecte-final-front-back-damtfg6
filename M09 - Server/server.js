@@ -113,18 +113,29 @@ app.post('/registrarUsuari', async (req, res) => {
 
   app.post("/usuarisLogin", function (req, res) {
     const user = req.body;
-    let autoritzacio = { "autoritzacio": false, "rol": 'usuari', "userData": null };
+    let autoritzacio = { "autoritzacio": false, "rol": 'usuari', "userData": null, "usuariTutoritzatData": null };
 
-
+    // Obtener usuarios de las tablas Usuaris y Familiar
     getUsuarisLoginAndroid(connection).then((usuaris) => {
         usuaris = JSON.parse(usuaris);
 
-        let i;
-        for (i = 0; i < usuaris.length && !autoritzacio.autoritzacio; i++) {
+        // Buscar en la lista combinada de usuarios
+        for (let i = 0; i < usuaris.length && !autoritzacio.autoritzacio; i++) {
             if (usuaris[i].dni == user.dni && usuaris[i].contrasenya == user.contrasenya) {
                 autoritzacio.autoritzacio = true;
-                autoritzacio.rol = usuaris[i].rol === "usuari" ? "usuari" : (usuaris[i].usuari_identificador ? "tutor" : "usuari");
                 autoritzacio.userData = usuaris[i];
+                autoritzacio.rol = usuaris[i].rol === "usuari" ? "usuari" : (usuaris[i].usuari_identificador ? "tutor" : "usuari");
+
+                // Buscar el usuario tutorizado si el usuario actual es un "Tutor"
+                if (autoritzacio.rol === "tutor") {
+                    for (let j = 0; j < usuaris.length; j++) {
+                        if (usuaris[i].usuari_identificador === usuaris[j].usuari_identificador && usuaris[j].rol === "usuari") {
+                            autoritzacio.usuariTutoritzatData = usuaris[j];
+                            break; // Terminar la búsqueda una vez que se haya encontrado el usuario tutorizado
+                        }
+                    }
+                }
+
                 req.session.nombre = user.nomUsuari;
             }
         }
@@ -136,6 +147,8 @@ app.post('/registrarUsuari', async (req, res) => {
         res.status(500).json({ "error": "Error al obtener usuarios" });
     });
 });
+
+
 
 
 
