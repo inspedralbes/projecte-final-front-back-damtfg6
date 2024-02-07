@@ -92,8 +92,7 @@ app.post('/registrarUsuari', async (req, res) => {
 
   app.post("/usuarisLogin", function (req, res) {
     const user = req.body;
-    let usuariTrobat = false;
-    let autoritzacio = { "autoritzacio": false, "rol": 'usuari' };
+    let autoritzacio = { "autoritzacio": false, "rol": 'usuari', "userData": null };
 
     // Obtener usuarios de las tablas Usuaris y Familiar
     getUsuarisLoginAndroid(connection).then((usuaris) => {
@@ -101,20 +100,13 @@ app.post('/registrarUsuari', async (req, res) => {
 
         // Buscar en la lista combinada de usuarios
         let i;
-        for (i = 0; i < usuaris.length && !usuariTrobat; i++) {
+        for (i = 0; i < usuaris.length && !autoritzacio.autoritzacio; i++) {
             if (usuaris[i].dni == user.dni && usuaris[i].contrasenya == user.contrasenya) {
-                usuariTrobat = true;
+                autoritzacio.autoritzacio = true;
+                autoritzacio.rol = usuaris[i].rol === "usuari" ? "usuari" : (usuaris[i].usuari_identificador ? "tutor" : "usuari");
+                autoritzacio.userData = usuaris[i];
                 req.session.nombre = user.nomUsuari;
             }
-        }
-
-        // Después del bucle
-        if (usuariTrobat) {
-            // Establecer la autorización en verdadera
-            autoritzacio.autoritzacio = true;
-
-            // Verificar si el usuario tiene un identificador
-            autoritzacio.rol = usuaris[i - 1].usuari_identificador ? "tutor" : "usuari";
         }
 
         console.log("Autoritzacio Login: ", autoritzacio);
@@ -124,6 +116,7 @@ app.post('/registrarUsuari', async (req, res) => {
         res.status(500).json({ "error": "Error al obtener usuarios" });
     });
 });
+
 
 
 

@@ -13,9 +13,9 @@ const connection = mysql.createPool({
 async function getUsuarisLoginAndroid(connection) {
     try {
         const [rows, fields] = await connection.execute(`
-            SELECT dni, contrasenya, NULL AS usuari_identificador FROM Usuaris
+            SELECT nomCognoms, dni, telefon, correu, contrasenya, usuari_identificador, 'usuari' as rol FROM Usuaris
             UNION
-            SELECT dni, contrasenya, usuari_identificador FROM Familiar
+            SELECT nomCognoms, dni, telefon, correu, contrasenya, usuari_identificador, 'tutor' as rol FROM Familiar
         `);
         const usuariosJSON = JSON.stringify(rows);
         return usuariosJSON;
