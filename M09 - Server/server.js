@@ -33,7 +33,6 @@ const connection = mysql.createPool({
 });
 
 //----------------------------------- CHAT -----------------------------------//
-
 const io = socketIO(httpServer, {
   cors: {
       origin: "*",
@@ -41,10 +40,10 @@ const io = socketIO(httpServer, {
   }
 });
 app.post('/enviarMensaje', async (req, res) => {
-const { senderId, message } = req.body;
-console.log(`Recibida solicitud de ${senderId} para enviar mensaje: ${message}`);
+const { nomCognoms, message } = req.body;
+console.log(`Recibida solicitud de ${nomCognoms} para enviar mensaje: ${message}`);
 for (let userId in users) {
-  users[userId].emit('receive_message', { senderId, message });
+  users[userId].emit('receive_message', { nomCognoms, message });
 }
 console.log(`Mensaje enviado con éxito a todos los usuarios`);
 
@@ -73,7 +72,6 @@ socket.on('disconnect', () => {
     }
 });
 });
-
 
 
 
