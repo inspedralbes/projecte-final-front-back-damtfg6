@@ -10,6 +10,9 @@ const app = express();
 const PORT = 3672;
 
 const httpServer = http.createServer(app);
+httpServer.listen(PORT, () => {
+  console.log("Servidor => " + PORT);
+});
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -39,45 +42,6 @@ const io = socketIO(httpServer, {
       methods: ["GET", "POST"]
   }
 });
-app.post('/enviarMensaje', async (req, res) => {
-const { nomCognoms, message } = req.body;
-console.log(`Recibida solicitud de ${nomCognoms} para enviar mensaje: ${message}`);
-for (let userId in users) {
-  users[userId].emit('receive_message', { nomCognoms, message });
-}
-console.log(`Mensaje enviado con éxito a todos los usuarios`);
-
-res.send({ success: true });
-});
-let users = [];
-
-io.on('connection', (socket) => {
-  console.log('Nuevo usuario conectado'); 
-
-  socket.on('user_connected', (userId) => {
-      users[userId] = socket;
-      console.log('Usuario ' + userId + ' conectado'); 
-
-  socket.on('send_message', (data) => {
-      if (users[data.receiverId]) {
-          users[data.receiverId].emit('receive_message', data);
-          console.log('Mensaje enviado a ' + data.receiverId); 
-      }
-  });
-
-  socket.on('disconnect', () => {
-      for (let userId in users) {
-          if (users[userId] == socket) {
-              delete users[userId];
-              console.log('Usuario ' + userId + ' desconectado'); 
-              break;
-          }
-      }
-  });
-});
-});
-
-
 //----------------------------------- Usuaris Reigister i Login -----------------------------------//
 
 app.post('/registrarUsuari', async (req, res) => {
@@ -149,18 +113,6 @@ app.post('/registrarUsuari', async (req, res) => {
         console.error('Error al obtener usuarios:', error.message);
         res.status(500).json({ "error": "Error al obtener usuarios" });
     });
-});
-
-
-
-
-
-
-
-
-// Inici del servidor HTTP
-httpServer.listen(PORT, () => {
-    console.log("Servidor => " + PORT);
 });
 
 var history = require('connect-history-api-fallback')
