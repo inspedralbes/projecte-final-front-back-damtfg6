@@ -151,6 +151,13 @@ app.post('/registrarUsuari', async (req, res) => {
     });
 });
 
+
+
+
+
+
+
+
 // Inici del servidor HTTP
 httpServer.listen(PORT, () => {
     console.log("Servidor => " + PORT);
