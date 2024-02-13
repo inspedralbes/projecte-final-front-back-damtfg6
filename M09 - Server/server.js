@@ -38,25 +38,21 @@ const connection = mysql.createPool({
 //----------------------------------- CHAT -----------------------------------//
 const io = socketIO(httpServer, {
   cors: {
-    origin: "*",
-    methods: ["GET", "POST"]
+      origin: "*",
+      methods: ["GET", "POST"]
   }
 });
 io.on('connection', (socket) => {
   console.log('a user connected');
-
-  // Escuchar eventos específicos del cliente
   socket.on('chat message', (data) => {
-    console.log('message: ' + data.message);
-    console.log('sender: ' + data.nomCognoms);
-
-    // Emitir el mensaje a todos los usuarios
-    io.emit('chat message', data);
+      console.log('message: ' + data.message);
+      console.log('sender: ' + data.nomCognoms);
+      io.emit('chat message', data);
 
   });
 
   socket.on('disconnect', () => {
-    console.log('user disconnected');
+      console.log('user disconnected');
   });
 });
 //----------------------------------- Usuaris Reigister i Login -----------------------------------//
