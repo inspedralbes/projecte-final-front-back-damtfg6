@@ -1,6 +1,7 @@
 import Hero from '../components/Hero';
 import Navbar from '../components/navbar';
 import SobreImg from "../assets/imatgeBack3.jpg";
+import Footer from '../components/Footer';
 
 function Servei () {
     return (
@@ -12,6 +13,7 @@ function Servei () {
                 title="Serveis"
                 btnClass="hide"
             />
+            <Footer />
         </>
     )
 }

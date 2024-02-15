@@ -1,6 +1,7 @@
 import Hero from '../components/Hero';
 import Navbar from '../components/navbar';
 import SobreImg from "../assets/imatgeBack3.jpg";
+import Footer from '../components/Footer';
 function Inici () {
     return (
         <>
@@ -15,6 +16,7 @@ function Inici () {
         url="/"
         btnClass="show"
         />
+        <Footer />
         </>
         
     )

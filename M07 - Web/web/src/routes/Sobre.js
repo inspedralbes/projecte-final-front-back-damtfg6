@@ -1,7 +1,8 @@
 import Hero from '../components/Hero';
 import Navbar from '../components/navbar';
 import SobreImg from "../assets/imatgeBack3.jpg";
-
+import Footer from '../components/Footer';
+import SobreNosaltres from '../components/SobreNosaltres';
 function Sobre() {
     return (
         <>
@@ -12,6 +13,8 @@ function Sobre() {
                 title="Sobre nosaltres"
                 btnClass="hide"
             />
+            <SobreNosaltres />
+            <Footer />
         </>
     )
 }
