@@ -42,9 +42,9 @@ const Footer = () => {
                 <strong>Recuerdate</strong> és una aplicació mobil de recordatoris i contol d'ubicació formada per 2 interficies les cuals son tutor i usuari.
             </p>
             <div class="footer-icons">
-                <a href="#"><i class="fa-brands fa-instagram-square"></i></a>
-                <a href="#"><i class="fa-brands fa-linkedin"></i></a>
-                <a href="#"><i class="fa-brands fa-twitter-square"></i></a>
+                <a href="https://www.instagram.com/"><i class="fa-brands fa-instagram-square"></i></a>
+                <a href="https://www.linkedin.com/"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="https://twitter.com/"><i class="fa-brands fa-twitter-square"></i></a>
             </div>
         </div>
     </div>
