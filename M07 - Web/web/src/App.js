@@ -1,11 +1,19 @@
 import './styles.css';
-import Navbar from './components/navbar';
-//import {Routes} from 'react-router-dom';
+import { Route, Routes} from 'react-router-dom';
+import Inici from './routes/Inici';
+import Servei from './routes/Servei';
+import Sobre from './routes/Sobre';
+import Contacte from './routes/Contacte';
 
 export default function App() {
   return (
     <div className="App">
-      <Navbar/>
+      <Routes>
+        <Route path="/" element={<Inici />} />
+        <Route path="/sobre" element={<Sobre />} />
+        <Route path="/servei" element={<Servei />} />
+        <Route path="/contacte" element={<Contacte />} />
+      </Routes>
       </div>
   );
 }

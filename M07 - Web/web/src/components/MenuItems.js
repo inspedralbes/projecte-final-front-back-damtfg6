@@ -7,13 +7,13 @@ export const MenuItems = [
  },
  {
     title: 'Sobre nosaltres',
-    url: '/som',
+    url: '/sobre',
     cName: 'nav-links',
     icon : "fa-solid fa-circle-info"
  },
  {
     title: 'Serveis',
-    url: '/serveis',
+    url: '/servei',
     cName: 'nav-links',
     icon : "fa-solid fa-briefcase"
  },
