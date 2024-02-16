@@ -1,4 +1,4 @@
-# 🚀 Grup6: Projecte de Desenvolupament
+# 🚀 Grup6: Recuerdate
 
 ## 👥 Membres de l'equip
 - Albert Coral
