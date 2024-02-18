@@ -6,7 +6,7 @@ const Footer = () => {
     <div class="footer-distributed">
 
         <div class="footer-left">
-            <h3>Recuerdate</h3>
+            <h3>Recuérdame</h3>
 
             <p class="footer-links">
 
@@ -19,7 +19,7 @@ const Footer = () => {
                 <Link to="/contacte">Contacta'ns</Link>
             </p>
 
-            <p class="footer-company-name">Copyright © 2024 <strong>Recuerdate</strong> All rights reserved</p>
+            <p class="footer-company-name">Copyright © 2024 <strong>Recuérdame</strong> All rights reserved</p>
         </div>
 
         <div class="footer-center">
@@ -41,7 +41,7 @@ const Footer = () => {
         <div class="footer-right">
             <p class="footer-company-about">
                 <span>Sobre nosaltres</span>
-                <strong>Recuerdate</strong> és una aplicació mobil de recordatoris i contol d'ubicació formada per 2 interficies les cuals son tutor i usuari.
+                <strong>Recuérdame</strong> és una aplicació mobil de recordatoris i contol d'ubicació formada per 2 interficies les cuals son tutor i usuari.
             </p>
             <div class="footer-icons">
                 <a href="https://www.instagram.com/"><i class="fa-brands fa-instagram-square"></i></a>
