@@ -55,6 +55,8 @@ io.on('connection', (socket) => {
       console.log('user disconnected');
   });
 });
+
+
 //----------------------------------- Usuaris Reigister i Login -----------------------------------//
 
 app.post('/registrarUsuari', async (req, res) => {
