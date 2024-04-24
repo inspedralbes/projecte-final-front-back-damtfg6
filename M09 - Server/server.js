@@ -5,7 +5,7 @@ const mysql = require('mysql2/promise');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const session = require('express-session');
-const { eventCreat } = require('../M06 - Acces a dades/mongoCalendari.js');
+const { eventCreat, buscarEventos } = require('../M06 - Acces a dades/mongoCalendari.js');
 const { registrarUsuari, getUsuarisLoginAndroid, registrarTutor, registrarTutoritzacio, verificarUsuario } = require('./scriptSQL.js');
 const app = express();
 const PORT = 3672;
@@ -72,6 +72,20 @@ app.post('/', async function (req, res) {
       res.status(500).send('Error al guardar el evento en MongoDB');
   }
 });
+
+app.get('/events', async function (req, res) {
+  let dniUsuario = req.query.dni;
+
+  try {
+      // Buscar los eventos del usuario en MongoDB
+      let eventos = await buscarEventos(dniUsuario);
+      res.send(eventos);
+  } catch (error) {
+      console.error('Error al buscar los eventos:', error);
+      res.status(500).send('Error al buscar los eventos');
+  }
+});
+
 //----------------------------------- Usuaris Reigister i Login -----------------------------------//
 
 app.post('/registrarUsuari', async (req, res) => {
