@@ -5,6 +5,7 @@ const mysql = require('mysql2/promise');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const session = require('express-session');
+const { eventCreat } = require('../M06 - Acces a dades/mongoCalendari.js');
 const { registrarUsuari, getUsuarisLoginAndroid, registrarTutor, registrarTutoritzacio, verificarUsuario } = require('./scriptSQL.js');
 const app = express();
 const PORT = 3672;
@@ -54,6 +55,22 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
       console.log('user disconnected');
   });
+});
+//----------------------------------- Events de recoratori -----------------------------------//
+
+app.use(bodyParser.json());
+
+app.post('/', async function (req, res) {
+  console.log(req.body);  // Aquí se imprimirán los datos del evento
+
+  try {
+      // Enviar los datos del evento a MongoDB
+      await eventCreat(req.body);
+      res.send('Evento recibido y guardado en MongoDB!');
+  } catch (error) {
+      console.error('Error al guardar el evento en MongoDB:', error);
+      res.status(500).send('Error al guardar el evento en MongoDB');
+  }
 });
 //----------------------------------- Usuaris Reigister i Login -----------------------------------//
 
