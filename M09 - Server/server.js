@@ -3,6 +3,7 @@ const http = require('http');
 const socketIO = require('socket.io');
 const mysql = require('mysql2/promise');
 const bodyParser = require('body-parser');
+const nodemailer = require("nodemailer");
 const cors = require('cors');
 const session = require('express-session');
 const { eventCreat, buscarEventos } = require('../M06 - Acces a dades/mongoCalendari.js');
@@ -57,7 +58,7 @@ io.on('connection', (socket) => {
   });
 });
 //----------------------------------- Events de recoratori -----------------------------------//
-
+//Part Usuari
 app.use(bodyParser.json());
 
 app.post('/', async function (req, res) {
@@ -85,6 +86,47 @@ app.get('/events', async function (req, res) {
       res.status(500).send('Error al buscar los eventos');
   }
 });
+//Part Tutor
+app.get('/getDniUsuarioVinculado', function(req, res) {
+  let dniTutor = req.query.dni;
+  let sql = `SELECT u.dni FROM Usuaris u INNER JOIN Familiar f ON u.usuari_identificador = f.usuari_identificador WHERE f.dni = ${dniTutor}`;
+  // Ejecuta la consulta y devuelve el resultado
+});
+
+//----------------------------------- CONTACTE WEB -----------------------------------//
+
+app.use(express.json());
+
+app.post("/api/contacte", async (req, res) => {
+    const { nom, correu, assumpte, missatge } = req.body;
+
+    let transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: "remind.soporte@gmail.com",
+            pass: "Pedralbes24",
+        },
+    });
+
+    let mailOptions = {
+        from: correu,
+        to: "remind.soporte@gmail.com",
+        subject: assumpte,
+        text: `Nom: ${nom}\nCorreu: ${correu}\nMissatge: ${missatge}`,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log(error);
+            res.status(500).send("Error al enviar el correo");
+        } else {
+            console.log("Correo enviado: " + info.response);
+            res.status(200).send("Correo enviado correctamente");
+        }
+    });
+});
+
+
 
 //----------------------------------- Usuaris Reigister i Login -----------------------------------//
 
