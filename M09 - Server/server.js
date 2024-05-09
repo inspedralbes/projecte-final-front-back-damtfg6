@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const nodemailer = require("nodemailer");
 const cors = require('cors');
 const session = require('express-session');
+const { saveFamilyItems, getFamilyItems } = require('../M06 - Acces a dades/mongoFamiliar.js');
 const { eventCreat, buscarEventos } = require('../M06 - Acces a dades/mongoCalendari.js');
 const { registrarUsuari, getUsuarisLoginAndroid, registrarTutor, registrarTutoritzacio, verificarUsuario } = require('./scriptSQL.js');
 const app = express();
@@ -105,7 +106,7 @@ app.post("/api/contacte", async (req, res) => {
         auth: {
             user: "remind.soporte@gmail.com",
             pass: "Pedralbes24",
-        },
+        }, 
     });
 
     let mailOptions = {
@@ -126,6 +127,28 @@ app.post("/api/contacte", async (req, res) => {
     });
 });
 
+//----------------------------------- FAMILIARS -----------------------------------//
+
+app.use(bodyParser.json());
+
+app.post('/family', async (req, res) => {
+    try {
+        const familyItems = req.body;
+        const result = await saveFamilyItems(familyItems);
+        res.status(200).send(result);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+});
+app.get('/familyItems', async (req, res) => {
+  try {
+      const dni = req.query.dni;
+      const familyItems = await getFamilyItems(dni);
+      res.status(200).send(familyItems);
+  } catch (error) {
+      res.status(500).send(error);
+  }
+});
 
 
 //----------------------------------- Usuaris Reigister i Login -----------------------------------//
