@@ -28,8 +28,8 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: true }
 }));
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 const connection = mysql.createPool({
   host: "dam.inspedralbes.cat",
@@ -60,7 +60,6 @@ io.on('connection', (socket) => {
 });
 //----------------------------------- Events de recoratori -----------------------------------//
 //Part Usuari
-app.use(bodyParser.json());
 
 app.post('/', async function (req, res) {
   console.log(req.body);  // Aquí se imprimirán los datos del evento
@@ -129,7 +128,6 @@ app.post("/api/contacte", async (req, res) => {
 
 //----------------------------------- FAMILIARS -----------------------------------//
 
-app.use(bodyParser.json());
 
 app.post('/family', async (req, res) => {
     try {
@@ -143,6 +141,7 @@ app.post('/family', async (req, res) => {
 app.get('/familyItems', async (req, res) => {
   try {
       const dni = req.query.dni;
+      console.log("DNI recibido: " + dni); // Esta línea imprimirá el DNI en la consola del servidor
       const familyItems = await getFamilyItems(dni);
       res.status(200).send(familyItems);
   } catch (error) {
