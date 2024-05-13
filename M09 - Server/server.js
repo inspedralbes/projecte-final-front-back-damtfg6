@@ -8,6 +8,7 @@ const cors = require('cors');
 const session = require('express-session');
 const { saveFamilyItems, getFamilyItems } = require('../M06 - Acces a dades/mongoFamiliar.js');
 const { eventCreat, buscarEventos } = require('../M06 - Acces a dades/mongoCalendari.js');
+const { saveRoundData } = require('../M06 - Acces a dades/mongoStats.js');
 const { registrarUsuari, getUsuarisLoginAndroid, registrarTutor, registrarTutoritzacio, verificarUsuario } = require('./scriptSQL.js');
 const app = express();
 const PORT = 3672;
@@ -100,10 +101,11 @@ app.get('/getDniUsuarioVinculado', function (req, res) {
 app.post('/stats', async (req, res) => {
   try {
     console.log(req.body);
+    await saveRoundData(req.body);
     res.send("corone");
   } catch (error) {
     console.error('Al fallo hasta que owned by daddyPeruJonny llore level unbreakable:', error);
-
+    res.status(500).send('Error al guardar los datos de las rondas');
   }
 });
 
