@@ -93,6 +93,16 @@ app.get('/getDniUsuarioVinculado', function(req, res) {
   // Ejecuta la consulta y devuelve el resultado
 });
 
+
+//----------------------------------- Stats i Ranking -----------------------------------//
+
+
+app.post('/stats', async (req, res) => {
+
+  console.log(req.body); 
+
+});
+
 //----------------------------------- CONTACTE WEB -----------------------------------//
 
 app.use(express.json());
