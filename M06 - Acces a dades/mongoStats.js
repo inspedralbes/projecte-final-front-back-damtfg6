@@ -16,4 +16,20 @@ async function saveRoundData(roundData) {
     }
 }
 
-module.exports = { saveRoundData };
+async function getStatistics(dni) {
+    try {
+        await client.connect();
+        const collection = client.db("ClusterSintesis").collection("stats");
+
+        // Buscar todas las partidas para el DNI proporcionado
+        const result = await collection.find({ dni: dni }).toArray();
+        
+        console.log("Partidas recuperadas con éxito para el DNI:", dni);
+        return result;
+    } catch (error) {
+        console.error("Error al recuperar las partidas:", error);
+        throw error;
+    }
+}
+
+module.exports = { saveRoundData, getStatistics };
