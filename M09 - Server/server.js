@@ -41,21 +41,21 @@ const connection = mysql.createPool({
 //----------------------------------- CHAT -----------------------------------//
 const io = socketIO(httpServer, {
   cors: {
-      origin: "*",
-      methods: ["GET", "POST"]
+    origin: "*",
+    methods: ["GET", "POST"]
   }
 });
 io.on('connection', (socket) => {
   console.log('a user connected');
   socket.on('chat message', (data) => {
-      console.log('message: ' + data.message);
-      console.log('sender: ' + data.nomCognoms);
-      io.emit('chat message', data);
+    console.log('message: ' + data.message);
+    console.log('sender: ' + data.nomCognoms);
+    io.emit('chat message', data);
 
   });
 
   socket.on('disconnect', () => {
-      console.log('user disconnected');
+    console.log('user disconnected');
   });
 });
 //----------------------------------- Events de recoratori -----------------------------------//
@@ -65,12 +65,12 @@ app.post('/', async function (req, res) {
   console.log(req.body);  // Aquí se imprimirán los datos del evento
 
   try {
-      // Enviar los datos del evento a MongoDB
-      await eventCreat(req.body);
-      res.send('Evento recibido y guardado en MongoDB!');
+    // Enviar los datos del evento a MongoDB
+    await eventCreat(req.body);
+    res.send('Evento recibido y guardado en MongoDB!');
   } catch (error) {
-      console.error('Error al guardar el evento en MongoDB:', error);
-      res.status(500).send('Error al guardar el evento en MongoDB');
+    console.error('Error al guardar el evento en MongoDB:', error);
+    res.status(500).send('Error al guardar el evento en MongoDB');
   }
 });
 
@@ -78,16 +78,16 @@ app.get('/events', async function (req, res) {
   let dniUsuario = req.query.dni;
 
   try {
-      // Buscar los eventos del usuario en MongoDB
-      let eventos = await buscarEventos(dniUsuario);
-      res.send(eventos);
+    // Buscar los eventos del usuario en MongoDB
+    let eventos = await buscarEventos(dniUsuario);
+    res.send(eventos);
   } catch (error) {
-      console.error('Error al buscar los eventos:', error);
-      res.status(500).send('Error al buscar los eventos');
+    console.error('Error al buscar los eventos:', error);
+    res.status(500).send('Error al buscar los eventos');
   }
 });
 //Part Tutor
-app.get('/getDniUsuarioVinculado', function(req, res) {
+app.get('/getDniUsuarioVinculado', function (req, res) {
   let dniTutor = req.query.dni;
   let sql = `SELECT u.dni FROM Usuaris u INNER JOIN Familiar f ON u.usuari_identificador = f.usuari_identificador WHERE f.dni = ${dniTutor}`;
   // Ejecuta la consulta y devuelve el resultado
@@ -98,9 +98,13 @@ app.get('/getDniUsuarioVinculado', function(req, res) {
 
 
 app.post('/stats', async (req, res) => {
+  try {
+    console.log(req.body);
+    res.send("corone");
+  } catch (error) {
+    console.error('Al fallo hasta que owned by daddyPeruJonny llore level unbreakable:', error);
 
-  console.log(req.body); 
-
+  }
 });
 
 //----------------------------------- CONTACTE WEB -----------------------------------//
@@ -108,54 +112,54 @@ app.post('/stats', async (req, res) => {
 app.use(express.json());
 
 app.post("/api/contacte", async (req, res) => {
-    const { nom, correu, assumpte, missatge } = req.body;
+  const { nom, correu, assumpte, missatge } = req.body;
 
-    let transporter = nodemailer.createTransport({
-        service: "gmail",
-        auth: {
-            user: "remind.soporte@gmail.com",
-            pass: "Pedralbes24",
-        }, 
-    });
+  let transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "remind.soporte@gmail.com",
+      pass: "Pedralbes24",
+    },
+  });
 
-    let mailOptions = {
-        from: correu,
-        to: "remind.soporte@gmail.com",
-        subject: assumpte,
-        text: `Nom: ${nom}\nCorreu: ${correu}\nMissatge: ${missatge}`,
-    };
+  let mailOptions = {
+    from: correu,
+    to: "remind.soporte@gmail.com",
+    subject: assumpte,
+    text: `Nom: ${nom}\nCorreu: ${correu}\nMissatge: ${missatge}`,
+  };
 
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.log(error);
-            res.status(500).send("Error al enviar el correo");
-        } else {
-            console.log("Correo enviado: " + info.response);
-            res.status(200).send("Correo enviado correctamente");
-        }
-    });
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log(error);
+      res.status(500).send("Error al enviar el correo");
+    } else {
+      console.log("Correo enviado: " + info.response);
+      res.status(200).send("Correo enviado correctamente");
+    }
+  });
 });
 
 //----------------------------------- FAMILIARS -----------------------------------//
 
 
 app.post('/family', async (req, res) => {
-    try {
-        const familyItems = req.body;
-        const result = await saveFamilyItems(familyItems);
-        res.status(200).send(result);
-    } catch (error) {
-        res.status(500).send(error);
-    }
+  try {
+    const familyItems = req.body;
+    const result = await saveFamilyItems(familyItems);
+    res.status(200).send(result);
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
 app.get('/familyItems', async (req, res) => {
   try {
-      const dni = req.query.dni;
-      console.log("DNI recibido: " + dni); // Esta línea imprimirá el DNI en la consola del servidor
-      const familyItems = await getFamilyItems(dni);
-      res.status(200).send(familyItems);
+    const dni = req.query.dni;
+    console.log("DNI recibido: " + dni); // Esta línea imprimirá el DNI en la consola del servidor
+    const familyItems = await getFamilyItems(dni);
+    res.status(200).send(familyItems);
   } catch (error) {
-      res.status(500).send(error);
+    res.status(500).send(error);
   }
 });
 
@@ -256,19 +260,19 @@ app.post('/registrarTutoritzacio', async (req, res) => {
 
     // Proceder con la actualización del familiar en la base de datos
     const registrationResult = await registrarTutoritzacio(connection, familiarID, identificador);
-  
+
 
     if (registrationResult) {
       // Verificar si el usuario tiene el rol "usuari"
       autoritzacio.autoritzacio = true;
-          for (let i = 0; i < usuaris.length; i++) {
-          let identificador2 = parseInt(identificador);
-          if (usuaris[i].rol === "usuari" && usuaris[i].usuari_identificador === identificador2) {
-              autoritzacio.usuariTutoritzatData = usuaris[i];
-              break; 
-          }
+      for (let i = 0; i < usuaris.length; i++) {
+        let identificador2 = parseInt(identificador);
+        if (usuaris[i].rol === "usuari" && usuaris[i].usuari_identificador === identificador2) {
+          autoritzacio.usuariTutoritzatData = usuaris[i];
+          break;
+        }
       }
-  
+
       console.log("Autoritzacio Tutoritzacio: ", autoritzacio);
       res.json(autoritzacio);
     } else {
