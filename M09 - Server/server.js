@@ -4,13 +4,17 @@ const socketIO = require('socket.io');
 const mysql = require('mysql2/promise');
 const bodyParser = require('body-parser');
 const nodemailer = require("nodemailer");
+const path = require('path');
 const cors = require('cors');
+const { spawn } = require('child_process');
+const fs = require('fs');
 const session = require('express-session');
 const { saveFamilyItems, getFamilyItems } = require('../M06 - Acces a dades/mongoFamiliar.js');
 const { eventCreat, buscarEventos } = require('../M06 - Acces a dades/mongoCalendari.js');
-const { saveRoundData, getStatistics } = require('../M06 - Acces a dades/mongoStats.js');
+const { saveRoundData, getStatistics, buscarStats } = require('../M06 - Acces a dades/mongoStats.js');
 const { registrarUsuari, getUsuarisLoginAndroid, registrarTutor, registrarTutoritzacio, verificarUsuario } = require('./scriptSQL.js');
 const ubicacioGrafics = path.join(__dirname, "..", "M10/grafics");
+const arxiuPython = path.join(__dirname, "..", "M10/script.py");
 const app = express();
 const PORT = 3672;
 
@@ -111,7 +115,7 @@ app.post('/stats', async (req, res) => {
     console.log(dades);
 
     //Generar el nou progres
-    //començarPythonStats(dades);
+    començarPythonStats(dades);
 
     res.send("Datos de la ronda guardados correctamente")
 
@@ -128,9 +132,13 @@ function base64_encode(file) {
   return Buffer.from(bitmap).toString('base64');
 }
 
-async function començarPythonStats() {
+async function començarPythonStats(dades) {
   return new Promise((resolve, reject) => {
       const python = spawn('python', [arxiuPython]);
+
+      // Pasar los datos a Python
+      python.stdin.write(JSON.stringify(dades));
+      python.stdin.end();
 
       python.stdout.on('data', function (data) {
           console.log(`stdout: ${data}`);
@@ -174,6 +182,20 @@ function comprobarExistencia(fotografia) {
       });
   });
 }
+
+
+app.get('/getStatsUsuari', async function (req, res) {
+  let dniUsuario = req.query.dni;
+
+  try {
+    // Buscar los eventos del usuario en MongoDB
+    let stats = await buscarStats(dniUsuario);
+    res.send(stats);
+  } catch (error) {
+    console.error('Error al buscar los eventos:', error);
+    res.status(500).send('Error al buscar los eventos');
+  }
+});
 //----------------------------------- CONTACTE WEB -----------------------------------//
 
 app.use(express.json());

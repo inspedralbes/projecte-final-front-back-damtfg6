@@ -32,4 +32,22 @@ async function getStatistics(dni) {
     }
 }
 
-module.exports = { saveRoundData, getStatistics };
+
+async function buscarStats(dni) {
+    try {
+        await client.connect();
+        const collection = client.db("ClusterSintesis").collection("grafics");
+
+        // Buscar todas las partidas para el DNI proporcionado
+        const result = await collection.find({ dni: dni }).toArray();
+        
+        console.log("Stats:", dni);
+        return result;
+    } catch (error) {
+        console.error("Error al recuperar las partidas:", error);
+        throw error;
+    }
+}
+
+
+module.exports = { saveRoundData, getStatistics, buscarStats };
