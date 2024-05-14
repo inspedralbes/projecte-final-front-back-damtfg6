@@ -14,10 +14,10 @@ function Inici () {
         <Hero 
         cName="hero"
         heroImg= {SobreImg}
-        title="Benvinguts a la nostra pàgina web"
-        text="Descobreix la nostra passió per ajudar-te a viure amb més tranquil·litat. Estem compromesos a proporcionar serveis de qualitat que superin les teves expectatives."
-        buttonText="Serveis oferts"
-        url="/"
+        title="Benvinguts a ReMind"
+        text="Descobreix la nostra passió per ajudar-te a viure amb més tranquil·litat"
+        buttonText="Sobre nosaltres"
+        url="/sobre"
         btnClass="show"
         />
         <div className="testimonials-container">
