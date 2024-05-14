@@ -8,8 +8,9 @@ const cors = require('cors');
 const session = require('express-session');
 const { saveFamilyItems, getFamilyItems } = require('../M06 - Acces a dades/mongoFamiliar.js');
 const { eventCreat, buscarEventos } = require('../M06 - Acces a dades/mongoCalendari.js');
-const { saveRoundData } = require('../M06 - Acces a dades/mongoStats.js');
+const { saveRoundData, getStatistics } = require('../M06 - Acces a dades/mongoStats.js');
 const { registrarUsuari, getUsuarisLoginAndroid, registrarTutor, registrarTutoritzacio, verificarUsuario } = require('./scriptSQL.js');
+const ubicacioGrafics = path.join(__dirname, "..", "M10/grafics");
 const app = express();
 const PORT = 3672;
 
@@ -102,13 +103,77 @@ app.post('/stats', async (req, res) => {
   try {
     console.log(req.body);
     await saveRoundData(req.body);
-    res.send("corone");
+    console.log('Datos de la ronda guardados correctamente');
+  
+    //Obtenir les noves stats
+    let dades = await getStatistics(req.body.dni);
+    console.log('Estadísticas recuperadas con éxito para el DNI:', req.body.dni);
+    console.log(dades);
+
+    //Generar el nou progres
+    //començarPythonStats(dades);
+
+    res.send("Datos de la ronda guardados correctamente")
+
   } catch (error) {
     console.error('Al fallo hasta que owned by daddyPeruJonny llore level unbreakable:', error);
     res.status(500).send('Error al guardar los datos de las rondas');
   }
 });
 
+//----------------------------------- Python stats ---------------------------------------//
+
+function base64_encode(file) {
+  let bitmap = fs.readFileSync(file);
+  return Buffer.from(bitmap).toString('base64');
+}
+
+async function començarPythonStats() {
+  return new Promise((resolve, reject) => {
+      const python = spawn('python', [arxiuPython]);
+
+      python.stdout.on('data', function (data) {
+          console.log(`stdout: ${data}`);
+      });
+
+      python.stderr.on('data', function (data) {
+          console.error(`stderr: ${data}`);
+      });
+
+      python.on('close', function (code) {
+          console.log(`child process exited with code ${code}`);
+          comprobarExistencia(ubicacioGrafics).then((grafics) => {
+              let arxius = [];
+              for (let i = 0; i < grafics.length; i++) {
+                  let nomArxius = grafics[i].split(".");
+                  let arxiu = {
+                      titol: nomArxius[0],
+                      foto: base64_encode(path.join(ubicacioGrafics, grafics[i]))
+                  }
+                  arxius[i] = arxiu;
+                  // Aquí es donde guardarías la imagen encriptada en la base de datos
+                  // db.guardarImagen(arxiu);
+              }
+              resolve(arxius);
+          });
+      });
+  });
+}
+
+
+//graficos
+function comprobarExistencia(fotografia) {
+  return new Promise((resolve, reject) => {
+      fs.readdir(fotografia, function (err, archivos) {
+          if (err) {
+              console.log('Error al leer el directorio');
+              reject(err);
+          } else {
+              resolve(archivos);
+          }
+      });
+  });
+}
 //----------------------------------- CONTACTE WEB -----------------------------------//
 
 app.use(express.json());
