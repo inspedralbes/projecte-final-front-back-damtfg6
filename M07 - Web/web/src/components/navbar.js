@@ -28,7 +28,7 @@ class Navbar extends Component {
                             </li>
                         )
                     })}
-                    <button className="buttonRegistre">Registre</button>
+                    {/* <button className="buttonRegistre">Registre</button> */}
                 </ul>
 
             </nav>

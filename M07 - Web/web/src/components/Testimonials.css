@@ -1,0 +1,31 @@
+/* Archivo: components/Testimonials.css */
+.testimonials-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2em;
+    background-color: #f8f9fa;
+}
+
+.testimonial {
+    max-width: 100%; /* Aumenta el ancho máximo */
+    margin-bottom: 2em;
+    padding: 1em;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.testimonial-text {
+    font-size: 1.2em;
+    line-height: 1.6;
+    color: #333;
+}
+
+.testimonial-author {
+    font-size: 1em;
+    font-weight: bold;
+    text-align: right;
+    color: #555;
+}

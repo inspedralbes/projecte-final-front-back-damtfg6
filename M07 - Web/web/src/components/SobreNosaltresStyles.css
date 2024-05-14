@@ -1,18 +1,90 @@
-.about-container{
-    margin: 4rem 6rem;
-    text-align: start;
+/* Archivo: components/SobreNosaltresStyles.css */
+.about-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2em;
+    background-color: #f8f9fa;
 }
 
-.about-container h1{
-   padding-bottom: 1rem;
+.section {
+    width: 100%; /* Ajusta el ancho aquí */
+    max-width: 1200px; /* Añade un ancho máximo si es necesario */
+    margin-bottom: 3em;
+    padding: 2em;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
 }
 
-.about-container p{
-    padding-bottom: 2rem;
- }
+.section h1 {
+    font-size: 1.5em;
+    color: #333;
+    margin-bottom: 1em; /* Añade margen inferior */
+}
 
- @media screen and (max-width: 850px) {
-    .about-container{
-        margin: 4rem 2rem;
-    }
- }
+.section p {
+    font-size: 1.2em;
+    line-height: 1.6;
+    color: #333;
+    margin-bottom: 1em; /* Añade margen inferior */
+}
+
+.team {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 2em; /* Añade margen superior */
+}
+
+.team-member {
+    flex: 0 0 calc(33.3333% - 1em);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 2em;
+    padding: 1em;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.team-member-photo {
+    width: 200px; /* Ajusta el tamaño de la foto aquí */
+    height: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-bottom: 1em; /* Añade margen inferior */
+}
+
+.team-member-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.team-member-name {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.5em; /* Añade margen inferior */
+}
+
+.team-member-title {
+    font-size: 1em;
+    color: #555;
+    margin-bottom: 1em; /* Añade margen inferior */
+}
+
+.team-member-socials {
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+}
+
+.social-icon {
+    width: 24px; /* Ajusta el tamaño del icono aquí */
+    height: 24px;
+}
