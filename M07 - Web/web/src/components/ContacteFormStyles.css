@@ -1,59 +1,58 @@
-.form-container{
-    margin: 4rem 6rem;
+/* Archivo: ContacteFormStyles.css */
+.form-container {
+    margin: 2rem 6rem; /* Margen superior reducido */
     color: #2a2a2a;
 }
 
 .form-container form {
-    padding-top: 3rem;
+    padding-top: 1rem; /* Padding superior reducido */
     display: flex;
     flex-direction: column;
-    width: 50%;
+    width: 100%; /* Ajustado al 100% para que ocupe todo el ancho disponible */
     margin: auto;
 }
 
-.form-container input{
-    height: 3rem;
+.form-container input,
+.form-container textarea {
+    width: 100%; /* Ajustado al 100% para que ocupe todo el ancho disponible */
+    height: 60px; /* Altura aumentada para una mejor visibilidad */
     padding: 0 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem; /* Margen inferior reducido */
     border-radius: .3rem;
     border: 1px solid #2a2a2a;
+    font-size: 1rem; /* Tamaño de fuente reducido */
 }
 
-.form-container textarea{
+.form-container textarea {
+    height: 120px; /* Altura fija aumentada para el área de texto */
     padding: 1rem;
-    margin-bottom: 2rem;
-    border-radius: .3rem;
-    border: 1px solid #2a2a2a;
 }
 
-.form-container button{
+.form-container button {
+    width: 100%; /* Ajustado al 100% para que ocupe todo el ancho disponible */
+    height: 60px; /* Altura aumentada para el botón */
     padding: 0.5rem 1rem;
-    white-space: nowrap;
     border-radius: 0.3rem;
-    font-size: 1rem;
+    font-size: 1rem; /* Tamaño de fuente reducido para el botón */
     font-weight: 600;
     border: none;
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    background-color:lightgray ;
+    background-color: lightgray;
 }
 
-.form-container button:hover{
+.form-container button:hover {
     background-color: #151516;
     color: #fff;
 }
 
-
-@media screen and (max-width: 850px){
-    
-    .form-container{
-        margin: 4rem 2rem;
+@media screen and (max-width: 850px) {
+    .form-container {
+        margin: 2rem; /* Margen ajustado para pantallas más pequeñas */
     }
 
     .form-container form {
-        padding-top: 2rem;
-        width: 90%;
+        padding-top: 1rem;
+        width: 90%; /* Ajustado al 90% para pantallas más pequeñas */
     }
-
-    
 }

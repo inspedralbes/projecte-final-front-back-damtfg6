@@ -1,0 +1,29 @@
+/* Archivo: PaginaContacteStyles.css */
+.pagina-contacte-container {
+    display: flex;
+    flex-direction: row-reverse; /* Mantiene el mapa a la izquierda */
+    justify-content: center; /* Centra los elementos horizontalmente */
+    align-items: center; /* Centra los elementos verticalmente */
+    padding: 4rem 6rem;
+}
+
+.contacte-form-wrapper {
+    width: 50%; /* Ajusta el ancho según sea necesario */
+    /* Asegúrate de que el formulario tenga suficiente margen o padding si es necesario */
+}
+
+.leaflet-map-wrapper {
+    width: 40%; /* Tamaño del mapa */
+    height: 400px; /* Altura fija para el mapa */
+    /* Puedes agregar margen si necesitas más espacio alrededor del mapa */
+}
+
+@media screen and (max-width: 850px){
+    .pagina-contacte-container {
+        flex-direction: column-reverse; /* Mantiene el mapa arriba en pantallas pequeñas */
+    }
+
+    .contacte-form-wrapper, .leaflet-map-wrapper {
+        width: 100%;
+    }
+}
