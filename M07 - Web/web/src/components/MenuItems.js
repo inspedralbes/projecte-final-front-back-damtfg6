@@ -24,10 +24,11 @@ export const MenuItems = [
     icon : "fa-solid fa-address-book"
  },
  {
-    title: 'Registre',
-    url: '/contacte',
-    cName: 'nav-links-mobile',
- },
+   title: 'App',
+   url: '/app',
+   cName: 'nav-links',
+   icon: 'fa-solid fa-download',
+},
 ]
 
 export default MenuItems;

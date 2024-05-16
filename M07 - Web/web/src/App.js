@@ -4,6 +4,7 @@ import Inici from './routes/Inici';
 import Servei from './routes/Servei';
 import Sobre from './routes/Sobre';
 import Contacte from './routes/Contacte';
+import AppDescargar from './routes/AppDescargar';
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
         <Route path="/sobre" element={<Sobre />} />
         <Route path="/servei" element={<Servei />} />
         <Route path="/contacte" element={<Contacte />} />
+        <Route path="/app" element={<AppDescargar />} />
       </Routes>
       </div>
   );

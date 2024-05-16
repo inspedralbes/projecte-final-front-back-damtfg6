@@ -1,0 +1,55 @@
+.services-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around; /* Distribuye los servicios uniformemente */
+    align-items: flex-start;
+    padding: 2em;
+    background-color: #f8f9fa; /* Color de fondo del contenedor */
+}
+
+.service {
+    flex: 0 0 calc(50% - 2em); /* Dos columnas con un espacio de 2em entre ellas */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1em;
+    padding: 1em;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #fff; /* Color de fondo de cada tarjeta de servicio */
+}
+
+.service-logo {
+    width: 250px; /* Nuevo tamaño del logo */
+    height: 250px; /* Asegúrate de que el aspecto del logo se mantiene */
+    margin-bottom: 1em;
+}
+
+.service-name {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #333; /* Color del título del servicio */
+    margin-bottom: 0.5em;
+}
+
+.service-description {
+    font-size: 1em;
+    color: #555; /* Color de la descripción del servicio */
+    text-align: center;
+    margin-bottom: 1em; /* Espacio después de la descripción */
+}
+
+/* Media queries para ajustes de responsividad */
+@media (max-width: 768px) {
+    .service {
+        flex: 0 0 100%; /* En pantallas pequeñas, cada servicio ocupará el 100% del ancho */
+    }
+}
+
+@media (max-width: 480px) {
+    .service-logo {
+        width: 80px; /* Tamaño más pequeño del logo para pantallas muy pequeñas */
+        height: 80px;
+    }
+}
