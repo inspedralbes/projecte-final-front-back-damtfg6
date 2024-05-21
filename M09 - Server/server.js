@@ -1,6 +1,6 @@
 const express = require('express');
 const http = require('http');
-const socketIo = require('socket.io');
+const socketIO = require('socket.io');
 const mysql = require('mysql2/promise');
 const bodyParser = require('body-parser');
 const nodemailer = require("nodemailer");
@@ -46,48 +46,31 @@ const connection = mysql.createPool({
   database: "a22albcormad_grup6"
 });
 
-const io = socketIo(server, {
+const io = socketIO(httpServer, {
   cors: {
-    origin: "*", // Asegúrate de configurar correctamente los orígenes permitidos en producción
+    origin: "*",
     methods: ["GET", "POST"]
   }
 });
 
 io.on('connection', (socket) => {
-  console.log('Un cliente se ha conectado');
-
+  console.log('a user connected');
+  
   socket.on('solicitarRanking', async () => {
     try {
       const ranking = await obtenerRanking();
-      console.log("Ranking ordenado:", ranking); // Esto mostrará el ranking en la consola del servidor
+      console.log("Ranking ordenado:", ranking); 
       socket.emit('actualizarRanking', ranking);
     } catch (error) {
       console.error('Error al obtener el ranking:', error);
     }
   });
 
-  // Añade aquí más manejadores de eventos según sea necesario
-});
-//----------------------------------- CHAT -----------------------------------//
-/*const io = socketIO(httpServer, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"]
-  }
-});
-io.on('connection', (socket) => {
-  console.log('a user connected');
-  socket.on('chat message', (data) => {
-    console.log('message: ' + data.message);
-    console.log('sender: ' + data.nomCognoms);
-    io.emit('chat message', data);
-
-  });
-
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
-});*/
+});
+
 //----------------------------------- Events de recoratori -----------------------------------//
 //Part Usuari
 
