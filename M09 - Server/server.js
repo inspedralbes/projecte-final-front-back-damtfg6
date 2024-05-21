@@ -125,6 +125,21 @@ app.post('/stats', async (req, res) => {
   }
 });
 
+// Ruta POST para /ranking
+app.post('/ranking', (req, res) => {
+  // Aquí recibimos los datos del ranking
+  const dniUsuario = req.body.dni;
+  const totalScore = req.body.totalScore;
+
+  // Mostrar los datos en el terminal
+  console.log('Datos recibidos para el ranking:');
+  console.log(`DNI: ${dniUsuario}`);
+  console.log(`Total Score: ${totalScore}`);
+
+  // Enviar una respuesta al cliente
+  res.status(200).send('Datos del ranking recibidos correctamente');
+});
+
 //----------------------------------- Python stats ---------------------------------------//
 
 function base64_encode(file) {
