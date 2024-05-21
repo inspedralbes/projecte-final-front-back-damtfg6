@@ -30,13 +30,13 @@ fechas = [partida['fecha'].split(' ')[0] for partida in mejores_partidas]
 puntuaciones = [partida['totalScore'] for partida in mejores_partidas]
 
 # Crear una figura más grande
-plt.figure(figsize=(8, 6))
+plt.figure(figsize=(6, 4))
 
 # Generar el gráfico
 plt.plot(fechas, puntuaciones)
 plt.xlabel('Fecha')
 plt.ylabel('Puntuació total')
-plt.title('Pregrés del jugador en el temps')
+plt.title('Progrés del jugador en el temps')
 
 # Rotar las fechas en el eje x
 plt.xticks(rotation='vertical')
@@ -75,7 +75,7 @@ falladas_ronda1 = [partida['ronda1']['fallades'] for partida in mejores_partidas
 falladas_ronda2 = [partida['ronda2']['fallades'] for partida in mejores_partidas]
 
 # Generar el gráfico para la ronda 1
-plt.figure(figsize=(8, 6))
+plt.figure(figsize=(6, 4))
 plt.plot(fechas, falladas_ronda1)
 plt.xlabel('Fecha')
 plt.ylabel('Preguntas Falladas')
@@ -106,7 +106,7 @@ else:
 os.remove(nombre_archivo_ronda1)
 
 # Generar el gráfico para la ronda 2
-plt.figure(figsize=(8, 6))
+plt.figure(figsize=(6, 4))
 plt.plot(fechas, falladas_ronda2)
 plt.xlabel('Fecha')
 plt.ylabel('Preguntas Falladas')

@@ -9,7 +9,7 @@ const cors = require('cors');
 const { spawn } = require('child_process');
 const fs = require('fs');
 const session = require('express-session');
-const { saveFamilyItems, getFamilyItems } = require('../M06 - Acces a dades/mongoFamiliar.js');
+const { saveFamilyItems, getFamilyItems, deleteSubItem, deleteItem } = require('../M06 - Acces a dades/mongoFamiliar.js');
 const { eventCreat, buscarEventos } = require('../M06 - Acces a dades/mongoCalendari.js');
 const { saveRoundData, getStatistics, buscarStats } = require('../M06 - Acces a dades/mongoStats.js');
 const { registrarUsuari, getUsuarisLoginAndroid, registrarTutor, registrarTutoritzacio, verificarUsuario } = require('./scriptSQL.js');
@@ -252,6 +252,33 @@ app.get('/familyItems', async (req, res) => {
   }
 });
 
+app.post('/deleteSubItem', async (req, res) => {
+  try {
+      const { dni, subItemTitle } = req.body; 
+      console.log("DNI recibido: " + dni); 
+      console.log("Título del subitem a eliminar: " + subItemTitle); 
+
+      await deleteSubItem(dni, subItemTitle);
+      res.status(200).send({ message: 'Subitem eliminado exitosamente' });
+  } catch (error) {
+      console.error("Error al eliminar el subitem:", error);
+      res.status(500).send(error);
+  }
+});
+
+app.post('/deleteItem', async (req, res) => {
+  try {
+      const { dni, itemTitle } = req.body;
+      console.log("DNI recibido: " + dni);
+      console.log("Título del item a eliminar: " + itemTitle);
+
+      await deleteItem(dni, itemTitle);
+      res.status(200).send({ message: 'Item eliminado exitosamente' });
+  } catch (error) {
+      console.error("Error al eliminar el item:", error);
+      res.status(500).send(error);
+  }
+});
 
 //----------------------------------- Usuaris Reigister i Login -----------------------------------//
 

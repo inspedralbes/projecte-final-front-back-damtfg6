@@ -1,4 +1,4 @@
-module.exports = { saveFamilyItems, getFamilyItems};
+module.exports = { saveFamilyItems, getFamilyItems, deleteSubItem, deleteItem};
 const { MongoClient } = require('mongodb');
 const uri = "mongodb://admin:Pedralbes24@ac-he8hfqu-shard-00-00.vhfwdze.mongodb.net:27017,ac-he8hfqu-shard-00-01.vhfwdze.mongodb.net:27017,ac-he8hfqu-shard-00-02.vhfwdze.mongodb.net:27017/?ssl=true&replicaSet=atlas-cucatx-shard-0&authSource=admin&retryWrites=true&w=majority&appName=ClusterSintesis"
 const client = new MongoClient(uri);
@@ -74,4 +74,39 @@ async function getFamilyItems(dni) {
         throw error;
     }
 }
+
+async function deleteSubItem(dni, subItemTitle) {
+    try {
+        await client.connect();
+        const collection = client.db("ClusterSintesis").collection("itemsFamiliars");
+
+        // Actualizar el documento para eliminar el subitem especificado
+        await collection.updateOne(
+            { dni: dni, 'items.subItemList.subItemTitle': subItemTitle },
+            { $pull: { 'items.$[].subItemList': { subItemTitle: subItemTitle } } }
+        );
+
+    } catch (error) {
+        console.error("Error al eliminar el subitem:", error);
+        throw error;
+    }
+}
+
+async function deleteItem(dni, itemTitle) {
+    try {
+        await client.connect();
+        const collection = client.db("ClusterSintesis").collection("itemsFamiliars");
+
+        // Actualizar el documento para eliminar el item especificado
+        await collection.updateOne(
+            { dni: dni },
+            { $pull: { items: { itemTitle: itemTitle } } }
+        );
+
+    } catch (error) {
+        console.error("Error al eliminar el item:", error);
+        throw error;
+    }
+}
+
 
