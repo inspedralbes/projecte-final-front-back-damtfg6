@@ -1,6 +1,6 @@
 const express = require('express');
 const http = require('http');
-const socketIO = require('socket.io');
+const socketIo = require('socket.io');
 const mysql = require('mysql2/promise');
 const bodyParser = require('body-parser');
 const nodemailer = require("nodemailer");
@@ -13,10 +13,12 @@ const { saveFamilyItems, getFamilyItems } = require('../M06 - Acces a dades/mong
 const { eventCreat, buscarEventos } = require('../M06 - Acces a dades/mongoCalendari.js');
 const { saveRoundData, getStatistics, buscarStats } = require('../M06 - Acces a dades/mongoStats.js');
 const { registrarUsuari, getUsuarisLoginAndroid, registrarTutor, registrarTutoritzacio, verificarUsuario } = require('./scriptSQL.js');
+const { guardarActualizarRanking, obtenerRanking} = require('../M06 - Acces a dades/mongoRanking.js');
 const ubicacioGrafics = path.join(__dirname, "..", "M10/grafics");
 const arxiuPython = path.join(__dirname, "..", "M10/script.py");
 const app = express();
 const PORT = 3672;
+const server = http.createServer(app);
 
 const httpServer = http.createServer(app);
 httpServer.listen(PORT, () => {
@@ -44,8 +46,30 @@ const connection = mysql.createPool({
   database: "a22albcormad_grup6"
 });
 
+const io = socketIo(server, {
+  cors: {
+    origin: "*", // Asegúrate de configurar correctamente los orígenes permitidos en producción
+    methods: ["GET", "POST"]
+  }
+});
+
+io.on('connection', (socket) => {
+  console.log('Un cliente se ha conectado');
+
+  socket.on('solicitar-ranking', async () => {
+    try {
+      const ranking = await obtenerRanking();
+      console.log("Ranking ordenado:", ranking); // Esto mostrará el ranking en la consola del servidor
+      socket.emit('actualizar-ranking', ranking);
+    } catch (error) {
+      console.error('Error al obtener el ranking:', error);
+    }
+  });
+
+  // Añade aquí más manejadores de eventos según sea necesario
+});
 //----------------------------------- CHAT -----------------------------------//
-const io = socketIO(httpServer, {
+/*const io = socketIO(httpServer, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"]
@@ -63,7 +87,7 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
-});
+});*/
 //----------------------------------- Events de recoratori -----------------------------------//
 //Part Usuari
 
@@ -105,14 +129,11 @@ app.get('/getDniUsuarioVinculado', function (req, res) {
 
 app.post('/stats', async (req, res) => {
   try {
-    console.log(req.body);
     await saveRoundData(req.body);
     console.log('Datos de la ronda guardados correctamente');
   
     //Obtenir les noves stats
     let dades = await getStatistics(req.body.dni);
-    console.log('Estadísticas recuperadas con éxito para el DNI:', req.body.dni);
-    console.log(dades);
 
     //Generar el nou progres
     començarPythonStats(dades);
@@ -125,19 +146,30 @@ app.post('/stats', async (req, res) => {
   }
 });
 
-// Ruta POST para /ranking
-app.post('/ranking', (req, res) => {
-  // Aquí recibimos los datos del ranking
-  const dniUsuario = req.body.dni;
-  const totalScore = req.body.totalScore;
 
-  // Mostrar los datos en el terminal
-  console.log('Datos recibidos para el ranking:');
-  console.log(`DNI: ${dniUsuario}`);
-  console.log(`Total Score: ${totalScore}`);
+app.post('/ranking', async (req, res) => {
+  try {
+      // Recibir los datos de ranking del cuerpo de la petición
+      const datosRanking = req.body;
 
-  // Enviar una respuesta al cliente
-  res.status(200).send('Datos del ranking recibidos correctamente');
+      // Guardar los datos de ranking en la base de datos
+      await guardarActualizarRanking(datosRanking);
+
+      res.status(200).send('Datos de ranking recibidos y guardados correctamente');
+  } catch (error) {
+      res.status(500).send('Error al guardar los datos de ranking');
+  }
+});
+
+app.get('/mostrar-ranking', async (req, res) => {
+  try {
+      const ranking = await obtenerRanking();
+      console.log("Ranking ordenado recibido:", ranking);
+      res.status(200).json(ranking);
+  } catch (error) {
+      console.error('Error al obtener el ranking:', error);
+      res.status(500).send('Error al obtener el ranking');
+  }
 });
 
 //----------------------------------- Python stats ---------------------------------------//
