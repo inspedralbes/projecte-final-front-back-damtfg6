@@ -56,11 +56,11 @@ const io = socketIo(server, {
 io.on('connection', (socket) => {
   console.log('Un cliente se ha conectado');
 
-  socket.on('solicitar-ranking', async () => {
+  socket.on('solicitarRanking', async () => {
     try {
       const ranking = await obtenerRanking();
       console.log("Ranking ordenado:", ranking); // Esto mostrará el ranking en la consola del servidor
-      socket.emit('actualizar-ranking', ranking);
+      socket.emit('actualizarRanking', ranking);
     } catch (error) {
       console.error('Error al obtener el ranking:', error);
     }
