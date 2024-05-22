@@ -12,7 +12,7 @@ const session = require('express-session');
 const { saveFamilyItems, getFamilyItems, deleteSubItem, deleteItem } = require('../M06 - Acces a dades/mongoFamiliar.js');
 const { eventCreat, buscarEventos } = require('../M06 - Acces a dades/mongoCalendari.js');
 const { saveRoundData, getStatistics, buscarStats } = require('../M06 - Acces a dades/mongoStats.js');
-const { registrarUsuari, getUsuarisLoginAndroid, registrarTutor, registrarTutoritzacio, verificarUsuario } = require('./scriptSQL.js');
+const { registrarUsuari, getUsuarisLoginAndroid, registrarTutor, registrarTutoritzacio, verificarUsuario } = require('../M06 - Acces a dades/scriptSQL.js');
 const { guardarActualizarRanking, obtenerRanking} = require('../M06 - Acces a dades/mongoRanking.js');
 const ubicacioGrafics = path.join(__dirname, "..", "M10/grafics");
 const arxiuPython = path.join(__dirname, "..", "M10/script.py");
@@ -347,42 +347,6 @@ app.post('/registrarTutor', async (req, res) => {
 });
 
 //--------------------------------Nova Tutoritzacio------------------------------------//
-/*app.post('/registrarTutoritzacio', async (req, res) => {
-  try {
-    const familiarID = req.query.familiarID;
-    const identificador = req.query.identificador;
-
-    console.log("Familiar: ", familiarID);
-    console.log("Usuari Identificador: ", identificador);
-
-
-
-    // Verificar si existe un usuario con el identificador proporcionado
-    const usuarioExistente = await verificarUsuario(connection, identificador);
-
-    if (!usuarioExistente) {
-      console.log("El usuario con identificador ", identificador, " no existe.");
-      return res.json({ autoritzacio: false, message: 'Error usuari no existeix' });
-    }
-
-    // Proceder con la actualización del familiar en la base de datos
-    const registrationResult = await registrarTutoritzacio(connection, familiarID, identificador);
-    if (registrationResult) {
-      res.json({ autoritzacio: true, message: 'Familiar registrado exitosamente' });
-    } else {
-      res.status(500).json({ autoritzacio: false, message: 'Error al registrar Familiar' });
-      console.log("Error al registrar Familiar");
-    }
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ autoritzacio: false, message: 'Error en el servidor' });
-    console.log("Error en el servidor");
-  }
-});*/
-
-
-//----------------------------------- TUTO 2 -----------------------------------//
-
 
 app.post('/registrarTutoritzacio', async (req, res) => {
   try {
@@ -431,14 +395,6 @@ app.post('/registrarTutoritzacio', async (req, res) => {
     console.log("Error en el servidor");
   }
 });
-
-
-
-
-
-
-
-
 
 
 
