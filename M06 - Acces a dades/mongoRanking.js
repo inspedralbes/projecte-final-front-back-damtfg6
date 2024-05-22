@@ -7,25 +7,25 @@ async function guardarActualizarRanking(datosRanking) {
         await client.connect();
         const collection = client.db("ClusterSintesis").collection("ranking");
 
-        // Buscar si ya existe un documento con el mismo DNI
-        const documentoExistente = await collection.findOne({ dni: datosRanking.dni });
+        // Buscar si ya existe un documento con el mismo nombre
+        const documentoExistente = await collection.findOne({ nombre: datosRanking.nombre });
 
         if (documentoExistente) {
             // Comprobar si la nueva puntuación es mayor que la existente
             if (datosRanking.totalScore > documentoExistente.totalScore) {
                 // Actualizar el documento con la nueva puntuación más alta
                 const resultadoActualizacion = await collection.updateOne(
-                    { dni: datosRanking.dni },
+                    { nombre: datosRanking.nombre },
                     { $set: { totalScore: datosRanking.totalScore } }
                 );
-                console.log(`Puntuación actualizada para el DNI: ${datosRanking.dni} con el nuevo totalScore: ${datosRanking.totalScore}`);
+                console.log(`Puntuación actualizada para el nombre: ${datosRanking.nombre} con el nuevo totalScore: ${datosRanking.totalScore}`);
             } else {
                 console.log(`La puntuación existente (${documentoExistente.totalScore}) es mayor o igual a la nueva puntuación (${datosRanking.totalScore}). No se requiere actualización.`);
             }
         } else {
             // Si no existe, insertar un nuevo documento con la puntuación
             const resultadoInsercion = await collection.insertOne(datosRanking);
-            console.log(`Nueva puntuación insertada para el DNI: ${datosRanking.dni} con totalScore: ${datosRanking.totalScore}`);
+            console.log(`Nueva puntuación insertada para el nombre: ${datosRanking.nombre} con totalScore: ${datosRanking.totalScore}`);
         }
     } catch (error) {
         console.error("Error al guardar o actualizar los datos de ranking:", error);
