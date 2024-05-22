@@ -29,5 +29,6 @@ exports.createUser = functions.firestore
         }
 
         // Asignar el identificador generado al nuevo usuario
-        return snap.ref.update({ usuari_identificador: identificador });
-    });
+await snap.ref.update({ usuari_identificador: identificador });
+return { usuari_identificador: identificador };  // Devuelve el identificador
+});
