@@ -1,6 +1,72 @@
 /* Archivo: Inici.css */
 .testimonials-container {
     display: flex;
+    flex-direction: column; /* Apilar verticalmente los elementos */
     justify-content: center;
+    align-items: center; /* Centrar los elementos horizontalmente */
     width: 100%;
+    padding: 5px; /* Añadir padding para evitar que el contenido toque los bordes */
+    box-sizing: border-box; /* Incluir padding y borde en el tamaño total */
+}
+
+.testimonial {
+    width: 100%; /* Ancho completo */
+    max-width: 400px; /* Ancho máximo para limitar el tamaño en pantallas grandes */
+    margin: 5px 0; /* Margen vertical para separar los testimonios */
+    padding: 10px; /* Reducir el padding */
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box; /* Incluir padding y borde en el tamaño total */
+}
+
+.testimonial p {
+    font-size: 0.8rem; /* Tamaño de fuente más pequeño para pantallas móviles */
+    color: #333;
+}
+
+.testimonial h3 {
+    margin-top: 5px;
+    font-size: 0.9rem; /* Tamaño de fuente más pequeño */
+    font-weight: bold;
+    color: #222;
+}
+
+/* Estilos responsivos */
+@media (min-width: 768px) {
+    .testimonial {
+        width: 80%; /* Ajusta el ancho en pantallas medianas */
+    }
+}
+
+@media (min-width: 1024px) {
+    .testimonials-container {
+        flex-direction: row; /* Elementos en fila para pantallas grandes */
+        flex-wrap: wrap; /* Permitir que los elementos se ajusten a nuevas líneas si es necesario */
+    }
+
+    .testimonial {
+        width: 45%; /* Dos elementos por fila en pantallas grandes */
+        margin: 2.5%; /* Espaciado entre los elementos */
+    }
+}
+
+@media (max-width: 767px) {
+    .testimonials-container {
+        padding: 5px; /* Menor padding en pantallas pequeñas */
+    }
+
+    .testimonial {
+        width: 100%; /* Ancho completo en móviles */
+        margin: 5px 0; /* Menor margen en móviles */
+        padding: 8px; /* Menor padding en móviles */
+    }
+
+    .testimonial p {
+        font-size: 0.7rem; /* Tamaño de fuente más pequeño en móviles */
+    }
+
+    .testimonial h3 {
+        font-size: 0.8rem; /* Tamaño de fuente más pequeño en móviles */
+    }
 }
