@@ -1,5 +1,4 @@
 const mysql = require('mysql2/promise');
-module.exports = { registrarUsuari, registrarTutor, getUsuarisLoginAndroid, registrarTutoritzacio, verificarUsuario};
 
 const connection = mysql.createPool({
     host: "dam.inspedralbes.cat",
@@ -112,4 +111,5 @@ async function verificarUsuario(connection, usuariIdentificador) {
 }
 
 
+module.exports = { registrarUsuari, registrarTutor, getUsuarisLoginAndroid, registrarTutoritzacio, verificarUsuario};
 

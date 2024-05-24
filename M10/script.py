@@ -61,11 +61,11 @@ dni_usuario = partidas[0]['dni']
 grafico_existente = collection.find_one({'dni': dni_usuario})
 
 if grafico_existente:
-    # Si existe, actualizarlo
-    collection.update_one({'dni': dni_usuario}, {'$set': {'imagen': imagen_base64}})
+    # Si existe, actualizar el gráfico de mejor resultado
+    collection.update_one({'dni': dni_usuario}, {'$set': {'imagen_mejor_resultado': imagen_base64}})
 else:
-    # Si no existe, insertar uno nuevo
-    collection.insert_one({'dni': dni_usuario, 'imagen': imagen_base64})
+    # Si no existe, insertar uno nuevo con el gráfico de mejor resultado
+    collection.insert_one({'dni': dni_usuario, 'imagen_mejor_resultado': imagen_base64})
 
 # Eliminar el archivo de imagen
 os.remove(nombre_archivo)
@@ -92,15 +92,8 @@ plt.savefig(nombre_archivo_ronda1)
 with open(nombre_archivo_ronda1, 'rb') as f:
     imagen_base64_ronda1 = base64.b64encode(f.read()).decode('utf-8')
 
-# Comprobar si ya existe un gráfico para este DNI
-grafico_existente = collection.find_one({'dni': dni_usuario, 'imagen': imagen_base64_ronda1})
-
-if grafico_existente:
-    # Si existe, actualizarlo
-    collection.update_one({'dni': dni_usuario, 'imagen': imagen_base64_ronda1}, {'$set': {'imagen': imagen_base64_ronda1}})
-else:
-    # Si no existe, insertar uno nuevo
-    collection.insert_one({'dni': dni_usuario, 'imagen': imagen_base64_ronda1})
+# Actualizar o insertar el gráfico de falladas en ronda 1
+collection.update_one({'dni': dni_usuario}, {'$set': {'imagen_falladas_ronda1': imagen_base64_ronda1}}, upsert=True)
 
 # Eliminar el archivo de imagen
 os.remove(nombre_archivo_ronda1)
@@ -123,15 +116,8 @@ plt.savefig(nombre_archivo_ronda2)
 with open(nombre_archivo_ronda2, 'rb') as f:
     imagen_base64_ronda2 = base64.b64encode(f.read()).decode('utf-8')
 
-# Comprobar si ya existe un gráfico para este DNI
-grafico_existente = collection.find_one({'dni': dni_usuario, 'imagen': imagen_base64_ronda2})
-
-if grafico_existente:
-    # Si existe, actualizarlo
-    collection.update_one({'dni': dni_usuario, 'imagen': imagen_base64_ronda2}, {'$set': {'imagen': imagen_base64_ronda2}})
-else:
-    # Si no existe, insertar uno nuevo
-    collection.insert_one({'dni': dni_usuario, 'imagen': imagen_base64_ronda2})
+# Actualizar o insertar el gráfico de falladas en ronda 2
+collection.update_one({'dni': dni_usuario}, {'$set': {'imagen_falladas_ronda2': imagen_base64_ronda2}}, upsert=True)
 
 # Eliminar el archivo de imagen
 os.remove(nombre_archivo_ronda2)

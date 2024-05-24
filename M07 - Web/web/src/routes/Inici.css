@@ -4,3 +4,25 @@
     justify-content: center;
     width: 100%;
 }
+
+/* Archivo: Inici.css */
+@media (max-width: 767px) {
+    .testimonials-container {
+        padding: 5px; /* Menor padding en pantallas pequeñas */
+    }
+
+    .testimonial {
+        width: 100%; /* Ancho completo en dispositivos móviles */
+        margin: 5px 0; /* Menor margen en dispositivos móviles */
+        padding: 8px; /* Menor padding en dispositivos móviles */
+    }
+
+    .testimonial p {
+        font-size: 0.7rem; /* Tamaño de fuente más pequeño en dispositivos móviles */
+    }
+
+    .testimonial h3 {
+        font-size: 0.8rem; /* Tamaño de fuente más pequeño en dispositivos móviles */
+    }
+}
+
