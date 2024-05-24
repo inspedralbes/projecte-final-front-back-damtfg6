@@ -1,11 +1,11 @@
-# 🚀 Grup6: Recuerdate
+# 🚀 Grup6: ReMind
 
 ## 👥 Membres de l'equip
 - Albert Coral
 - Jonathan Martin
 - Àngel Camps
 
-## 🌐 Projecte Desplegat
+## 🌐 Web
 El nostre projecte està actualment en creació.
 [Accedeix al projecte](http://recuerdate.dam.inspedralbes.cat:3672)
 
@@ -18,6 +18,11 @@ El nostre projecte està actualment en creació.
 ## 📝 Observacions
 Si tens alguna pregunta o comentari sobre el nostre projecte, no dubtis en posar-te en contacte amb nosaltres. Agraïm els teus comentaris i suggeriments per millorar la nostra feina.
 
+---
+## 🌐 Desplegament
+- **Servidor:** Servidor desplegat al labs.
+- **Web:** Web fa connexio amb el servidor al labs.
+- **App:** QR a la web per descarregar l'app .
 ---
 
 ## 📄 Documentació del Projecte
@@ -36,7 +41,7 @@ Per començar amb el projecte, seguiu aquests passos:
 
 1. Clonar el repositori amb la comanda `git clone <repository_url>`.
 2. Instal·lar les dependències utilitzant `npm install`.
-3. Iniciar el servidor amb la comanda `npm start`.
+3. Iniciar el servidor amb la comanda `node server.js`.
 
 ### 🗂️ Estructura del Codi del Servidor
 
