@@ -7,7 +7,7 @@
 
 ## 🌐 Projecte Desplegat
 El nostre projecte està actualment en creació.
-http://recuerdate.dam.inspedralbes.cat
+http://recuerdate.dam.inspedralbes.cat:3672
 
 ## 🎨 LLenguates utilizats 
 - Java
